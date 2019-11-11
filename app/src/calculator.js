@@ -1,14 +1,7 @@
 'use strict'
 
-const MAXINPUT = 2;
-
 function calculate(expression) {
     let result = String(expression).split(',');
-    
-
-    if (result.length > MAXINPUT) {
-        throw "Only Max of 2 numbers allowed";
-    }
 
     let total = 0;
     
