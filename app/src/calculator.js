@@ -2,6 +2,11 @@
 
 function calculate(expression) {
     let result = String(expression).split(/[,\n]/);
+    let negatives = result.filter(num =>  num < 0);
+
+    if (negatives.length > 0) {
+        throw new Error('Negative numbers found in input: ' + String(negatives) + '. Negatives are not allowed.')
+    }
 
     let total = 0;
     
@@ -13,5 +18,4 @@ function calculate(expression) {
     }
     return total;
 }
-
 module.exports = calculate;

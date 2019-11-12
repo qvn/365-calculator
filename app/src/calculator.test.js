@@ -14,6 +14,10 @@ describe('handling invalid inputs', () => {
     it('should not have a max number limit', () => {
         expect(calculate('1,2,3,4,5,6,7,8,9,10,11,12')).toEqual(78);
     });
+    it('should reject negative numbers', () => {
+        expect(() => calculate('1,-3')).toThrow('Negatives are not allowed');
+        expect(() => calculate('4,-3')).toThrow('Negatives are not allowed');
+    });
 });
 
 describe('test for handling of various delimiters', () => {
@@ -28,9 +32,7 @@ describe('test for correct addition', () => {
         expect(calculate(20)).toEqual(20);
     });
     it('should return sum of two numbers', () => {
-      expect(calculate('1,-3')).toEqual(-2);
       expect(calculate('1,2')).toEqual(3);
       expect(calculate('1,5000')).toEqual(5001);
-      expect(calculate('4,-3')).toEqual(1);
     });
  });
