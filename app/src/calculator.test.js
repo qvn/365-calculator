@@ -16,6 +16,12 @@ describe('handling invalid inputs', () => {
     });
 });
 
+describe('test for handling of various delimiters', () => {
+    it('should handle the \n delimiter', () => {
+        expect(calculate('1\n2,3')).toEqual(6);
+    });
+});
+
 describe('test for correct addition', () => {
     it('should return 20 for input of 20', () => {
         expect(calculate('20')).toEqual(20);

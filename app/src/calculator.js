@@ -1,7 +1,7 @@
 'use strict'
 
 function calculate(expression) {
-    let result = String(expression).split(',');
+    let result = String(expression).split(/[,\n]/);
 
     let total = 0;
     
