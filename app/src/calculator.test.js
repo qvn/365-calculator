@@ -27,6 +27,10 @@ describe('test for handling of various delimiters', () => {
     it('should handle the \n delimiter', () => {
         expect(calculate('1\n2,3')).toEqual(6);
     });
+    it("should handle the special delimiter combo [//{delimiter}/n]", () => {
+        expect(calculate('//#\n2#5')).toEqual(7);
+        expect(calculate('//,\n2,ff,100')).toEqual(102);
+    });
 });
 
 describe('test for correct addition', () => {

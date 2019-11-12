@@ -1,7 +1,19 @@
 'use strict'
+function getDelimiter(expression) {
+    let defaultDelimiter = new RegExp(/[,\n]/);
 
+    let specialDelimiter = String(expression).match(/(^\/\/.\n)/); //look for combination '//{delimiter}\n'
+
+    if (specialDelimiter) {
+        return new RegExp(specialDelimiter[0][2]);
+    } else {
+        return defaultDelimiter
+    }
+}
 function calculate(expression) {
-    let result = String(expression).split(/[,\n]/);
+
+    let result = String(expression).split(getDelimiter(expression));
+
     let negatives = result.filter(num =>  num < 0);
 
     if (negatives.length > 0) {
@@ -18,4 +30,5 @@ function calculate(expression) {
     }
     return total;
 }
+
 module.exports = calculate;
