@@ -12,7 +12,7 @@ function calculate(expression) {
     
     for (let i = 0; i < result.length; i++) {
         let num = parseFloat(result[i]);
-        if (!isNaN(num)) {
+        if (!isNaN(num)  && num <= 1000) {
             total += num;
         }
     }
