@@ -1,18 +1,39 @@
 'use strict'
-function getDelimiter(expression) {
-    let defaultDelimiter = new RegExp(/[,\n]/);
+function getSpecialDelimiter(header) {
 
-    let specialDelimiter = String(expression).match(/(^\/\/.\n)/); //look for combination '//{delimiter}\n'
+    let singleSpecialDelimiterRegExp = /(?<=^\/\/)(.)(?=\n)/g; // parse //{delimiter}\n{numbers}
 
-    if (specialDelimiter) {
-        return new RegExp(specialDelimiter[0][2]);
-    } else {
-        return defaultDelimiter
+    let multipleSpecialDelimiterRegExp = /(?<=^\/\/\[)(.+)(?=\]\n)/g; // //[{delimiters}]\n{numbers}
+
+    try {
+        let delimiter = header.match(singleSpecialDelimiterRegExp) || header.match(multipleSpecialDelimiterRegExp);
+        return delimiter[0];
+    } catch (error) {
+        if (error instanceof TypeError) {
+            return undefined;
+        } else {
+            printError(error, false);
+        }
     }
 }
 function calculate(expression) {
+    let defaultDelimiter = /[,\n]/;
+    
+    let signature = '\n';
 
-    let result = String(expression).split(getDelimiter(expression));
+    let result;
+
+    let marker = expression.indexOf(signature)
+
+    let header = expression.substring(0, marker + signature.length);
+    
+    let specialDelimiter = getSpecialDelimiter(header);
+
+    if (specialDelimiter) {
+        result = expression.substring(marker + signature.length - 1).split(specialDelimiter);
+    } else {
+        result = expression.split(defaultDelimiter);
+    }
 
     let negatives = result.filter(num =>  num < 0);
 
@@ -20,15 +41,12 @@ function calculate(expression) {
         throw new Error('Negative numbers found in input: ' + String(negatives) + '. Negatives are not allowed.')
     }
 
-    let total = 0;
-    
-    for (let i = 0; i < result.length; i++) {
-        let num = parseFloat(result[i]);
-        if (!isNaN(num)  && num <= 1000) {
-            total += num;
-        }
-    }
+    let total = result
+        .map(item => parseFloat(item))
+        .filter(item => !isNaN(item) && item <= 1000)
+        .reduce((acc, item) => (acc + item), 0);
+        
     return total;
 }
-
+calculate('//#\n2#5')
 module.exports = calculate;

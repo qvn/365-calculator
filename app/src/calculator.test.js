@@ -24,19 +24,22 @@ describe('handling invalid inputs', () => {
 });
 
 describe('test for handling of various delimiters', () => {
-    it('should handle the \n delimiter', () => {
+    it("should handle the line break delimiter", () => {
         expect(calculate('1\n2,3')).toEqual(6);
+        expect(calculate('1\n2\n3')).toEqual(6);
     });
     it("should handle the special delimiter combo [//{delimiter}/n]", () => {
         expect(calculate('//#\n2#5')).toEqual(7);
         expect(calculate('//,\n2,ff,100')).toEqual(102);
+    });
+    it('should handle multiple special delimiter combo //[{delimiter}]\n{numbers}', () => {
+        expect(calculate('//[***]\n11***22***33')).toEqual(66);
     });
 });
 
 describe('test for correct addition', () => {
     it('should return 20 for input of 20', () => {
         expect(calculate('20')).toEqual(20);
-        expect(calculate(20)).toEqual(20);
     });
     it('should return sum of two numbers', () => {
       expect(calculate('1,2')).toEqual(3);
