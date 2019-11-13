@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/365-calculator/static/css/main.0c3ad049.chunk.css",
+    "main.js": "/365-calculator/static/js/main.44836c64.chunk.js",
+    "main.js.map": "/365-calculator/static/js/main.44836c64.chunk.js.map",
+    "runtime-main.js": "/365-calculator/static/js/runtime-main.1c9c81d8.js",
+    "runtime-main.js.map": "/365-calculator/static/js/runtime-main.1c9c81d8.js.map",
+    "static/js/2.472edea1.chunk.js": "/365-calculator/static/js/2.472edea1.chunk.js",
+    "static/js/2.472edea1.chunk.js.map": "/365-calculator/static/js/2.472edea1.chunk.js.map",
+    "index.html": "/365-calculator/index.html",
+    "precache-manifest.0e898251be8a3790fc1d324688dba4e6.js": "/365-calculator/precache-manifest.0e898251be8a3790fc1d324688dba4e6.js",
+    "service-worker.js": "/365-calculator/service-worker.js",
+    "static/css/main.0c3ad049.chunk.css.map": "/365-calculator/static/css/main.0c3ad049.chunk.css.map"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.1c9c81d8.js",
+    "static/js/2.472edea1.chunk.js",
+    "static/css/main.0c3ad049.chunk.css",
+    "static/js/main.44836c64.chunk.js"
+  ]
+}
