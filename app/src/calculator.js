@@ -1,4 +1,3 @@
-'use strict'
 
 RegExp.escape = function(s) {
     return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
@@ -31,14 +30,14 @@ function calculate(expression) {
 
     for (let element of expression.split(',')) {
         switch (true) {
-            case isNaN(parseFloat(element)): // skip non number
+            case isNaN(Number(element)): // skip non number
                 result.push(0);
                 break;
-            case parseFloat(element) > 1000: // skip number larger than 1000
+            case Number(element) > 1000: // skip number larger than 1000
                 result.push(0);
                 break;
             default:
-                result.push(parseFloat(element)); 
+                result.push(Number(element)); 
                 break;
         }
     }
@@ -51,9 +50,8 @@ function calculate(expression) {
 
     const total = result.reduce((acc, item) => (acc + item), 0);
 
-    console.log(result.join('+') + ' = ' + total);
+    // console.log(result.join('+') + ' = ' + total);
 
     return total;
 }
-
 module.exports = {calculate, getDelimiter};
