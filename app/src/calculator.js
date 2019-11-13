@@ -12,7 +12,7 @@ function getDelimiter(header) {
     return singleDelimiter || manyDelimiter;
 }
 
-function calculate(expression) {
+export default function calculate(expression) {
 
     let negatives = [];
     let result = [];
