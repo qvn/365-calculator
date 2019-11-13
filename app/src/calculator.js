@@ -1,52 +1,59 @@
 'use strict'
-function getSpecialDelimiter(header) {
 
-    let singleSpecialDelimiterRegExp = /(?<=^\/\/)(.)(?=\n)/g; // parse //{delimiter}\n{numbers}
+RegExp.escape = function(s) {
+    return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+};
 
-    let multipleSpecialDelimiterRegExp = /(?<=^\/\/\[)(.+)(?=\]\n)/g; // //[{delimiters}]\n{numbers}
+function getDelimiter(header) {
+    // return array of delimiter(s) found in header
+    let singleDelimiter = String(header).match(/(?<=^\/\/)(.)(?=\n)/); // parse //{delimiter}\n{numbers}
 
-    try {
-        let delimiter = header.match(singleSpecialDelimiterRegExp) || header.match(multipleSpecialDelimiterRegExp);
-        return delimiter[0];
-    } catch (error) {
-        if (error instanceof TypeError) {
-            return undefined;
-        } else {
-            printError(error, false);
-        }
-    }
+    let manyDelimiter = String(header).match(/(?<=\[)(.*?)(?=\])/g); // parse //[{delimiter}][...]\n{numbers}
+
+    return singleDelimiter || manyDelimiter;
 }
+
+function parse(expression, additionalDelimiter = [], defaultDelimiter = ',') {
+    // Replace all special delimiters and return a string with the specified default delimiter. 
+
+    let delimiters = [',', '\n'];
+
+    if (additionalDelimiter) delimiters = [...delimiters, ...additionalDelimiter]
+    
+    for (let delimiter of delimiters) {
+        expression = expression.replace(new RegExp(RegExp.escape(delimiter), "g"), defaultDelimiter);
+    };
+  
+    return expression;
+    
+}
+
 function calculate(expression) {
-    let defaultDelimiter = /[,\n]/;
+
+    let negatives = [];
+    let header = expression.substring(0, expression.indexOf('\n')) + '\n';
+    let specialDelimiter = getDelimiter(header);
+
+    let total = parse(expression, specialDelimiter)
+                .split(',')
+                .map(item => parseFloat(item))
+                .filter(item => !isNaN(item))
+                .map(item => {
+                    if (item > 0) {
+                        return item;
+                    } else {
+                        negatives.push(item);
+                    } 
+                })
+                .filter(item => item <= 1000)
+                .reduce((acc, item) => (acc + item), 0);
     
-    let signature = '\n';
-
-    let result;
-
-    let marker = expression.indexOf(signature)
-
-    let header = expression.substring(0, marker + signature.length);
-    
-    let specialDelimiter = getSpecialDelimiter(header);
-
-    if (specialDelimiter) {
-        result = expression.substring(marker + signature.length - 1).split(specialDelimiter);
-    } else {
-        result = expression.split(defaultDelimiter);
-    }
-
-    let negatives = result.filter(num =>  num < 0);
 
     if (negatives.length > 0) {
         throw new Error('Negative numbers found in input: ' + String(negatives) + '. Negatives are not allowed.')
     }
-
-    let total = result
-        .map(item => parseFloat(item))
-        .filter(item => !isNaN(item) && item <= 1000)
-        .reduce((acc, item) => (acc + item), 0);
         
     return total;
 }
-calculate('//#\n2#5')
-module.exports = calculate;
+
+module.exports = {calculate, getDelimiter};

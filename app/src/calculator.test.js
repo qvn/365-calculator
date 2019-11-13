@@ -1,5 +1,5 @@
 'use strict'
-import calculate from './calculator.js'
+import {calculate, getDelimiter} from './calculator.js'
 describe('handling invalid inputs', () => {
     it('should treat empty input as 0', () => {
         expect(calculate('')).toEqual(0);
@@ -35,6 +35,9 @@ describe('test for handling of various delimiters', () => {
     it('should handle multiple special delimiter combo //[{delimiter}]\n{numbers}', () => {
         expect(calculate('//[***]\n11***22***33')).toEqual(66);
     });
+    it('should handle multiple and different delimiters', () => {
+        expect(calculate('//[*][!!][r9r]\n11r9r22*hh*33!!44')).toEqual(110);
+    });
 });
 
 describe('test for correct addition', () => {
@@ -44,5 +47,15 @@ describe('test for correct addition', () => {
     it('should return sum of two numbers', () => {
       expect(calculate('1,2')).toEqual(3);
       expect(calculate('1,500')).toEqual(501);
+    });
+ });
+
+ describe('tests for the delimiter parser', () => {
+    it('should return multi-character delimiter', () => {
+        expect(getDelimiter('//[***]\n')).toEqual(['***']);
+        // expect(getDelimiter("//[\n\n\n]")).toEqual(['\n\n\n']);
+    });
+    it('should return multiple multi-character delimiter', () => {
+        expect(getDelimiter('//[*][!!][r9r]\n')).toEqual(['*', '!!', 'r9r']);
     });
  });
