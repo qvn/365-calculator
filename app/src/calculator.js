@@ -13,28 +13,21 @@ function getDelimiter(header) {
     return singleDelimiter || manyDelimiter;
 }
 
-function parse(expression, additionalDelimiter = [], defaultDelimiter = ',') {
-    // Replace all special delimiters and return a string with the specified default delimiter. 
-
-    let delimiters = [',', '\n'];
-
-    if (additionalDelimiter) delimiters = [...delimiters, ...additionalDelimiter]
-    
-    for (let delimiter of delimiters) {
-        expression = expression.replace(new RegExp(RegExp.escape(delimiter), "g"), defaultDelimiter);
-    };
-  
-    return expression;
-    
-}
-
 function calculate(expression) {
 
     let negatives = [];
-    let header = expression.substring(0, expression.indexOf('\n')) + '\n';
-    let specialDelimiter = getDelimiter(header);
 
-    let total = parse(expression, specialDelimiter)
+    const header = expression.substring(0, expression.indexOf('\n'));
+
+    const specialDelimiter = getDelimiter(header + '\n');
+
+    const delimiters = specialDelimiter ? [...specialDelimiter, '\n'] : ['\n'];
+
+    for (let delimiter of delimiters) {
+        expression = expression.replace(new RegExp(RegExp.escape(delimiter), "g"), ',');
+    };
+
+    const total = expression
                 .split(',')
                 .map(item => parseFloat(item))
                 .filter(item => !isNaN(item))

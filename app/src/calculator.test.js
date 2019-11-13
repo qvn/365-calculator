@@ -37,6 +37,7 @@ describe('test for handling of various delimiters', () => {
     });
     it('should handle multiple and different delimiters', () => {
         expect(calculate('//[*][!!][r9r]\n11r9r22*hh*33!!44')).toEqual(110);
+        expect(calculate('2,,4,rrrr,1001,6')).toEqual(12);
     });
 });
 
