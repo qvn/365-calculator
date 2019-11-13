@@ -16,6 +16,7 @@ function getDelimiter(header) {
 function calculate(expression) {
 
     let negatives = [];
+    let result = [];
 
     const header = expression.substring(0, expression.indexOf('\n'));
 
@@ -27,25 +28,31 @@ function calculate(expression) {
         expression = expression.replace(new RegExp(RegExp.escape(delimiter), "g"), ',');
     };
 
-    const total = expression
-                .split(',')
-                .map(item => parseFloat(item))
-                .filter(item => !isNaN(item))
-                .map(item => {
-                    if (item > 0) {
-                        return item;
-                    } else {
-                        negatives.push(item);
-                    } 
-                })
-                .filter(item => item <= 1000)
-                .reduce((acc, item) => (acc + item), 0);
-    
+
+    for (let element of expression.split(',')) {
+        switch (true) {
+            case isNaN(parseFloat(element)): // skip non number
+                result.push(0);
+                break;
+            case parseFloat(element) > 1000: // skip number larger than 1000
+                result.push(0);
+                break;
+            default:
+                result.push(parseFloat(element)); 
+                break;
+        }
+    }
+
+    negatives = result.filter(item => item < 0);
 
     if (negatives.length > 0) {
         throw new Error('Negative numbers found in input: ' + String(negatives) + '. Negatives are not allowed.')
     }
-        
+
+    const total = result.reduce((acc, item) => (acc + item), 0);
+
+    console.log(result.join('+') + ' = ' + total);
+
     return total;
 }
 
