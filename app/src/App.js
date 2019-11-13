@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 // import Button from './Button';
 import List from './List';
-import calculate from './calculator.js';
+import {calculate, getDelimiter} from './calculator.js';
 
 
 class App extends React.Component{

@@ -12,7 +12,7 @@ function getDelimiter(header) {
     return singleDelimiter || manyDelimiter;
 }
 
-export default function calculate(expression) {
+function calculate(expression) {
 
     let negatives = [];
     let result = [];
@@ -54,4 +54,5 @@ export default function calculate(expression) {
 
     return total;
 }
-module.exports = {calculate, getDelimiter};
+
+export {calculate, getDelimiter};
